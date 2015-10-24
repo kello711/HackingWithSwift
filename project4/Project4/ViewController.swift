@@ -44,7 +44,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
 		navigationController?.toolbarHidden = false
 	}
 
-	override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject: AnyObject], context: UnsafeMutablePointer<Void>) {
+	override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
 		if keyPath == "estimatedProgress" {
 			progressView.progress = Float(webView.estimatedProgress)
 		}
@@ -62,7 +62,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
 	}
 
 	func openPage(action: UIAlertAction!) {
-		let url = NSURL(string: "http://" + action.title)!
+		let url = NSURL(string: "http://" + action.title!)!
 		webView.loadRequest(NSURLRequest(URL: url))
 	}
 
