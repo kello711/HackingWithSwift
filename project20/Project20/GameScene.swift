@@ -30,16 +30,14 @@ class GameScene: SKScene {
 		background.zPosition = -1
 		addChild(background)
 
-//		gameTimer = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: "launchFireworks", userInfo: nil, repeats: true)
+		gameTimer = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(launchFireworks), userInfo: nil, repeats: true)
 	}
    
 	override func update(currentTime: NSTimeInterval) {
-		for var i = fireworks.count - 1; i >= 0; --i {
-			let firework = fireworks[i]
-
+		for (index, firework) in fireworks.enumerate().reverse() {
 			if firework.position.y > 900 {
 				// this uses a position high above so that rockets can explode off screen
-				fireworks.removeAtIndex(i)
+				fireworks.removeAtIndex(index)
 				firework.removeFromParent()
 			}
 		}
@@ -83,7 +81,7 @@ class GameScene: SKScene {
 		node.runAction(move)
 
 		// 6
-		let emitter = SKEmitterNode(fileNamed: "fuse.sks")!
+		let emitter = SKEmitterNode(fileNamed: "fuse")!
 		emitter.position = CGPoint(x: 0, y: -22)
 		node.addChild(emitter)
 
@@ -140,7 +138,7 @@ class GameScene: SKScene {
 		let nodes = nodesAtPoint(location)
 
 		for node in nodes {
-			if node.isKindOfClass(SKSpriteNode.self) {
+			if node is SKSpriteNode {
 				let sprite = node as! SKSpriteNode
 
 				if sprite.name == "firework" {
@@ -171,7 +169,7 @@ class GameScene: SKScene {
 	}
 
 	func explodeFirework(firework: SKNode) {
-		let emitter = SKEmitterNode(fileNamed: "explode.sks")!
+		let emitter = SKEmitterNode(fileNamed: "explode")!
 		emitter.position = firework.position
 		addChild(emitter)
 
@@ -181,16 +179,15 @@ class GameScene: SKScene {
 	func explodeFireworks() {
 		var numExploded = 0
 
-		for var i = fireworks.count - 1; i >= 0; --i {
-			let parent = fireworks[i]
-			let firework = parent.children[0] as! SKSpriteNode
+		for (index, fireworkGroup) in fireworks.enumerate().reverse() {
+			let firework = fireworkGroup.children[0] as! SKSpriteNode
 
 			if firework.name == "selected" {
 				// destroy this firework!
-				explodeFirework(parent)
-				fireworks.removeAtIndex(i)
+				explodeFirework(fireworkGroup)
+				fireworks.removeAtIndex(index)
 
-				++numExploded
+				numExploded += 1
 			}
 		}
 

@@ -33,7 +33,7 @@ class ViewController: UIViewController {
 		for subview in view.subviews where subview.tag == 1001 {
 			let btn = subview as! UIButton
 			letterButtons.append(btn)
-			btn.addTarget(self, action: "letterTapped:", forControlEvents: .TouchUpInside)
+			btn.addTarget(self, action: #selector(letterTapped), forControlEvents: .TouchUpInside)
 		}
 
 		loadLevel()
@@ -88,7 +88,7 @@ class ViewController: UIViewController {
 			answersLabel.text = splitClues.joinWithSeparator("\n")
 
 			currentAnswer.text = ""
-			++score
+			score += 1
 
 			if score % 7 == 0 {
 				let ac = UIAlertController(title: "Well done!", message: "Are you ready for the next level?", preferredStyle: .Alert)
@@ -116,7 +116,7 @@ class ViewController: UIViewController {
 	}
 
 	func levelUp(action: UIAlertAction!) {
-		++level
+		level += 1
 		solutions.removeAll(keepCapacity: true)
 
 		loadLevel()

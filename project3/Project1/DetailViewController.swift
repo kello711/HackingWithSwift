@@ -36,7 +36,7 @@ class DetailViewController: UIViewController {
 		// Do any additional setup after loading the view, typically from a nib.
 		self.configureView()
 
-		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "shareTapped")
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(shareTapped))
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -56,6 +56,7 @@ class DetailViewController: UIViewController {
 
 	func shareTapped() {
 		let vc = UIActivityViewController(activityItems: [detailImageView.image!], applicationActivities: [])
+		vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
 		presentViewController(vc, animated: true, completion: nil)
 	}
 
